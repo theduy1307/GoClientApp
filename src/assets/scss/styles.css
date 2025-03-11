@@ -279,11 +279,6 @@ p:last-child {
   font-size: var(--fontSize) !important;
   font-family: var(--fontFamily) !important;
 }
-.input-search::-moz-placeholder {
-  color: var(--bodyColor);
-  -moz-transition: var(--transition);
-  transition: var(--transition);
-}
 .input-search::placeholder {
   color: var(--bodyColor);
   transition: var(--transition);
@@ -653,17 +648,9 @@ button {
   font-size: 12px;
   position: relative;
 }
-.v-card.trezo-card .v-card-header .search-box .input-search::-moz-placeholder {
-  color: var(--blackColor);
-  -moz-transition: var(--transition);
-  transition: var(--transition);
-}
 .v-card.trezo-card .v-card-header .search-box .input-search::placeholder {
   color: var(--blackColor);
   transition: var(--transition);
-}
-.v-card.trezo-card .v-card-header .search-box .input-search:focus::-moz-placeholder {
-  color: transparent;
 }
 .v-card.trezo-card .v-card-header .search-box .input-search:focus::placeholder {
   color: transparent;
@@ -1639,8 +1626,7 @@ Swiper Slider Style
 
 .clockdiv {
   background: rgba(255, 255, 255, 0.6);
-  -webkit-backdrop-filter: blur(12px);
-          backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
   position: absolute;
   bottom: 0;
   left: 0;
@@ -2485,7 +2471,6 @@ Swiper Slider Style
 }
 .hover-scroll-bar:hover::-webkit-scrollbar {
   width: 3px;
-  -webkit-transition: var(--transition);
   transition: var(--transition);
   border-radius: 50px;
   position: absolute;
@@ -2493,13 +2478,11 @@ Swiper Slider Style
 }
 .hover-scroll-bar:hover::-webkit-scrollbar-track {
   background: transparent;
-  -webkit-transition: var(--transition);
   transition: var(--transition);
   border-radius: 50px;
 }
 .hover-scroll-bar:hover::-webkit-scrollbar-thumb {
   background: #e0e0e2;
-  -webkit-transition: var(--transition);
   transition: var(--transition);
   border-radius: 50px;
 }
@@ -6259,13 +6242,7 @@ Custom Padding & Margin Area Style
 .trezo-form-group .v-field__input {
   padding-inline: 0;
 }
-.trezo-form-group .v-field__input .v-input__slot input::-moz-placeholder {
-  color: var(--blackColor) !important;
-}
 .trezo-form-group .v-field__input .v-input__slot input::placeholder {
-  color: var(--blackColor) !important;
-}
-.trezo-form-group .v-field__input::-moz-placeholder {
   color: var(--blackColor) !important;
 }
 .trezo-form-group .v-field__input::placeholder {
@@ -6301,9 +6278,6 @@ Custom Padding & Margin Area Style
 .trezo-form-group .v-input--density-default .v-field__input {
   row-gap: 8px;
   display: inline-block;
-}
-.trezo-form-group .v-input__details {
-  display: none;
 }
 .trezo-form-group .v-select__selection-text {
   font-size: var(--fontSize) !important;
@@ -7336,9 +7310,6 @@ Custom Padding & Margin Area Style
 .dark-theme textarea {
   color: var(--whiteColor);
 }
-.dark-theme textarea::-moz-placeholder {
-  color: var(--bodyColor);
-}
 .dark-theme textarea::placeholder {
   color: var(--bodyColor);
 }
@@ -7494,9 +7465,6 @@ Custom Padding & Margin Area Style
   background-color: #15203c !important;
   color: var(--whiteColor) !important;
   border-color: #15203c !important;
-}
-.dark-theme .v-card.trezo-card .v-card-header .search-box .input-search::-moz-placeholder {
-  color: var(--bodyColor) !important;
 }
 .dark-theme .v-card.trezo-card .v-card-header .search-box .input-search::placeholder {
   color: var(--bodyColor) !important;
@@ -7737,9 +7705,6 @@ Custom Padding & Margin Area Style
   background-color: #15203c !important;
   color: var(--whiteColor) !important;
   border-color: #15203c !important;
-}
-.dark-theme .header-area .header-left-side .search-box .input-search::-moz-placeholder, .dark-theme.dark-theme .header-left-side .search-box .input-search::-moz-placeholder {
-  color: var(--bodyColor) !important;
 }
 .dark-theme .header-area .header-left-side .search-box .input-search::placeholder, .dark-theme.dark-theme .header-left-side .search-box .input-search::placeholder {
   color: var(--bodyColor) !important;

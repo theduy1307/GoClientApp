@@ -39,7 +39,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, onMounted } from "vue";
 
 import WelcomeDashboard from "../../components/Dashboard/Ecommerce/WelcomeDashboard.vue";
 import TotalSalesChart from "../../components/Dashboard/Ecommerce/TotalSalesChart.vue";
@@ -52,7 +52,7 @@ import RecentOrders from "../../components/Dashboard/Ecommerce/RecentOrders.vue"
 import OrderSummaryChart from "../../components/Dashboard/Ecommerce/OrderSummaryChart.vue";
 import RecentTransactions from "../../components/Dashboard/Ecommerce/RecentTransactions.vue";
 import ReturningCustomerRateChart from "../../components/Dashboard/Ecommerce/ReturningCustomerRateChart.vue";
-
+import {userApi} from '@/infrastructure/apis/userApi'
 export default defineComponent({
   name: "EcommercePage",
   components: {
@@ -69,4 +69,10 @@ export default defineComponent({
     ReturningCustomerRateChart,
   },
 });
+</script>
+<script setup lang="ts">
+const {getUserInfo} = userApi()
+onMounted(() => {
+  getUserInfo()
+})
 </script>

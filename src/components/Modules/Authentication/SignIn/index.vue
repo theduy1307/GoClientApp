@@ -11,21 +11,13 @@
           <div class="form-content">
             <div class="logo">
               <v-img src="@/assets/images/logo-big.svg" alt="logo" />
-              <v-img
-                src="@/assets/images/white-logo-big.svg"
-                class="d-none"
-                alt="logo"
-              />
+              <v-img src="@/assets/images/white-logo-big.svg" class="d-none" alt="logo" />
             </div>
             <div class="title">
               <h1 class="fw-semibold">Welcome back to Trezo!</h1>
-              <p class="fw-medium">
-                Sign In with social account or enter your details
-              </p>
+              <p class="fw-medium">Sign In with social account or enter your details</p>
             </div>
-            <div
-              class="with-socials d-flex align-items-center justify-content-between"
-            >
+            <div class="with-socials d-flex align-items-center justify-content-between">
               <div>
                 <button type="button">
                   <v-img src="@/assets/images/icons/google.svg" alt="google" />
@@ -33,10 +25,7 @@
               </div>
               <div>
                 <button type="button">
-                  <v-img
-                    src="@/assets/images/icons/facebook2.svg"
-                    alt="facebook"
-                  />
+                  <v-img src="@/assets/images/icons/facebook2.svg" alt="facebook" />
                 </button>
               </div>
               <div>
@@ -45,54 +34,88 @@
                 </button>
               </div>
             </div>
-            <form>
+            <v-form ref="form">
               <div class="trezo-form-group">
-                <v-label class="d-block fw-medium text-black">
-                  Email Address
-                </v-label>
-                <v-text-field label="example@trezo.com"></v-text-field>
+                <v-label class="d-block fw-medium text-black"> Email Address </v-label>
+                <v-text-field
+                  type="email"
+                  label="example@example.com"
+                  v-model="email"
+                  :rules="nameRules"
+                ></v-text-field>
               </div>
               <div class="trezo-form-group">
-                <v-label class="d-block fw-medium text-black">
-                  Password
-                </v-label>
-                <v-text-field label="Type password"></v-text-field>
+                <v-label class="d-block fw-medium text-black"> Password </v-label>
+                <v-text-field label="Type password" type="password" v-model="password"></v-text-field>
               </div>
+              <!-- Error Message -->
               <div class="forgot-password">
-                <RouterLink
-                  to="/authentication/forgot-password"
-                  class="text-primary fw-semibold"
-                >
+                <RouterLink to="/authentication/forgot-password" class="text-primary fw-semibold">
                   Forgot Password?
                 </RouterLink>
               </div>
-              <button type="button">
+              <button type="submit">
                 <i class="material-symbols-outlined"> login </i>
                 Sign In
               </button>
+              <button type="submit" @click="validate">
+                <i class="material-symbols-outlined"> login </i>
+                Validate
+              </button>
               <p class="info">
                 Don’t have an account.
-                <RouterLink
-                  to="/authentication/sign-up"
-                  class="fw-semibold text-primary"
-                >
-                  Sign Up
-                </RouterLink>
+                <RouterLink to="/authentication/sign-up" class="fw-semibold text-primary"> Sign Up </RouterLink>
               </p>
-            </form>
+            </v-form>
           </div>
         </div>
       </div>
     </div>
   </div>
 </template>
+<!-- <script setup lang="ts">
+import { useField, useForm } from 'vee-validate'
+import { ref } from 'vue'
 
-<script>
+const { handleSubmit } = useForm({
+  validationSchema: {
+    email(value: any) {
+      if (/^[a-z.-]+@[a-z.-]+\.[a-z]+$/i.test(value)) return true
+
+      return 'Must be a valid e-mail.'
+    }
+  }
+})
+const email = useField('email')
+const password = useField('password')
+const submit = handleSubmit((values) => {
+  console.log(values)
+  alert(JSON.stringify(values, null, 2))
+})
+</script> -->
+<script lang="ts">
+import { useField, useForm } from 'vee-validate'
+import { ref } from 'vue'
+
 export default {
-  name: "SignIn",
-};
-</script>
+  name: 'SignIn',
+  setup() {
+    const email = ref('email')
+    const password = ref('select')
+    const form = ref()
+    const nameRules = ref([
+      (v: any) => !!v || 'Name is required',
+      (v: any) => (v && v.length <= 10) || 'Name must be 10 characters or less'
+    ])
+    async function validate() {
+      const { valid } = await form.value.validate()
 
+      if (valid) alert('Form is valid')
+    }
+    return { email, password, nameRules, validate, form }
+  }
+}
+</script>
 <style lang="scss" scoped>
 .sign-in-area {
   background-color: var(--whiteColor);
