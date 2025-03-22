@@ -27,19 +27,13 @@
           </router-link>
         </li>
         <li>
-          <router-link
-            to="/apps/file-manager/my-drive"
-            class="d-block position-relative"
-          >
+          <router-link to="/apps/file-manager/my-drive" class="d-block position-relative">
             <i class="material-symbols-outlined">format_list_bulleted</i>
             My Task
           </router-link>
         </li>
         <li>
-          <router-link
-            to="/authentication/sign-in"
-            class="d-block position-relative"
-          >
+          <router-link to="/authentication/sign-in" class="d-block position-relative">
             <i class="material-symbols-outlined">credit_card</i>
             Billing
           </router-link>
@@ -54,28 +48,19 @@
           </router-link>
         </li>
         <li>
-          <router-link
-            to="/settings/account-settings"
-            class="d-block position-relative"
-          >
+          <router-link to="/settings/account-settings" class="d-block position-relative">
             <i class="material-symbols-outlined">support</i>
             Support
           </router-link>
         </li>
         <li>
-          <router-link
-            to="/authentication/lock-screen"
-            class="d-block position-relative"
-          >
+          <router-link to="/authentication/lock-screen" class="d-block position-relative">
             <i class="material-symbols-outlined">lock </i>
             Lock Screen
           </router-link>
         </li>
         <li>
-          <router-link
-            to="/authentication/logout"
-            class="d-block position-relative"
-          >
+          <router-link to="/authentication/logout" class="d-block position-relative">
             <i class="material-symbols-outlined">logout </i>
             Logout
           </router-link>
@@ -87,6 +72,6 @@
 
 <script>
 export default {
-  name: "AdminProfile",
-};
+  name: 'AdminProfile'
+}
 </script>

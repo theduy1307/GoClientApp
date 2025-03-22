@@ -12,6 +12,26 @@ This files table contents are outlined below>>>>>
 
 ** - Default CSS
 */
+// Utilities CSS
+@use "./utilities";
+
+// UI-Kit
+@use "./ui-kit";
+
+// Form
+@use "./form";
+
+// Form
+@use "./default-table";
+
+// Form
+@use "./_pagination";
+
+// Dark
+@use "./dark";
+
+// RTL
+@use "./rtl";
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
 
 /* You can add global styles to this file, and also import other style files */
@@ -1123,9 +1143,9 @@ table {
     color: #7c24cc;
   }
 }
-.v-input__details {
-  display: none;
-}
+// .v-input__details {
+//   display: none;
+// }
 .v-input--density-default {
   --v-input-chips-margin-bottom: 0px;
 }
@@ -3789,24 +3809,3 @@ table {
     }
   }
 }
-
-// Utilities CSS
-@import "./utilities";
-
-// UI-Kit
-@import "./ui-kit";
-
-// Form
-@import "./form";
-
-// Form
-@import "./default-table";
-
-// Form
-@import "./_pagination";
-
-// Dark
-@import "./dark";
-
-// RTL
-@import "./rtl";

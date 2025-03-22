@@ -7,18 +7,18 @@
 <script>
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
-  name: "AccordionSlot",
+  name: 'AccordionSlot',
   props: {},
   data() {
     return {
       Accordion: {
         count: 0,
-        active: null,
-      },
-    };
+        active: null
+      }
+    }
   },
   provide() {
-    return { Accordion: this.Accordion };
-  },
-};
+    return { Accordion: this.Accordion }
+  }
+}
 </script>

@@ -1,11 +1,16 @@
 <template>
   <Preloader v-if="isLoading" />
   <LeftSidebar v-if="shouldShowSidebar && !isNotFound" />
+  <!-- Snackbar toàn cục -->
+  <v-snackbar v-model="snackbarStore.show" :color="snackbarStore.color" location="top right">
+    <v-icon :icon="snackbarStore.icon" class="mr-2"></v-icon>
+    {{ snackbarStore.message }}
+  </v-snackbar>
   <div
     :class="[
       'main-content d-flex flex-column',
       { active: stateStoreInstance.open },
-      { 'padding-minus': shouldShowPaddingLeftZero || isNotFound },
+      { 'padding-minus': shouldShowPaddingLeftZero || isNotFound }
     ]"
   >
     <TopHeader v-if="shouldShowHeader && !isNotFound" />
@@ -19,86 +24,77 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, onMounted, watchEffect } from "vue";
-import { useRoute } from "vue-router";
-import stateStore from "@/utils/store";
+import { defineComponent, ref, computed, onMounted, watchEffect } from 'vue'
+import { useRoute } from 'vue-router'
+import stateStore from '@/utils/store'
 
-import Preloader from "./components/Layouts/Preloader.vue";
-import LeftSidebar from "./components/Layouts/LeftSidebar/index.vue";
-import TopHeader from "./components/Layouts/TopHeader/index.vue";
-import MainFooter from "./components/Layouts/MainFooter.vue";
-import SettingsSidebar from "./components/Layouts/SettingsSidebar.vue";
+import Preloader from './components/Layouts/Preloader.vue'
+import LeftSidebar from './components/Layouts/LeftSidebar/index.vue'
+import TopHeader from './components/Layouts/TopHeader/index.vue'
+import MainFooter from './components/Layouts/MainFooter.vue'
+import SettingsSidebar from './components/Layouts/SettingsSidebar.vue'
+import { useSnackbarStore } from './shared/store/snackbar'
+import { useUserStore } from './shared/store/user'
 
 export default defineComponent({
-  name: "App",
+  name: 'App',
   components: {
     Preloader,
     LeftSidebar,
     TopHeader,
     MainFooter,
-    SettingsSidebar,
+    SettingsSidebar
   },
   setup() {
-    const isLoading = ref(true);
-    const stateStoreInstance = stateStore;
-    const route = useRoute();
-
+    const isLoading = ref(true)
+    const stateStoreInstance = stateStore
+    const route = useRoute()
+    const snackbarStore = useSnackbarStore()
+    const { getUser } = useUserStore()
     const hiddenRoutes = [
-      "/",
-      "/features",
-      "/team",
-      "/faq",
-      "/contact",
-      "/errors/not-found",
-      "/extra-pages/coming-soon",
-      "/authentication/sign-in",
-      "/authentication/sign-up",
-      "/authentication/logout",
-      "/authentication/forgot-password",
-      "/authentication/reset-password",
-      "/authentication/confirm-email",
-      "/authentication/lock-screen",
-    ];
+      '/',
+      '/features',
+      '/team',
+      '/faq',
+      '/contact',
+      '/errors/not-found',
+      '/extra-pages/coming-soon',
+      '/authentication/sign-in',
+      '/authentication/sign-up',
+      '/authentication/logout',
+      '/authentication/forgot-password',
+      '/authentication/reset-password',
+      '/authentication/confirm-email',
+      '/authentication/lock-screen'
+    ]
 
-    const shouldShowSidebar = computed(
-      () => !hiddenRoutes.includes(route.path)
-    );
-    const shouldShowHeader = computed(() => !hiddenRoutes.includes(route.path));
-    const shouldShowFooter = computed(() => !hiddenRoutes.includes(route.path));
-    const shouldShowPaddingLeftZero = computed(() =>
-      hiddenRoutes.includes(route.path)
-    );
+    const shouldShowSidebar = computed(() => !hiddenRoutes.includes(route.path))
+    const shouldShowHeader = computed(() => !hiddenRoutes.includes(route.path))
+    const shouldShowFooter = computed(() => !hiddenRoutes.includes(route.path))
+    const shouldShowPaddingLeftZero = computed(() => hiddenRoutes.includes(route.path))
 
     // Handle wildcard path for 404-like routes
-    const isNotFound = computed(() =>
-      route.matched.some((record) => record.path === "/:pathMatch(.*)*")
-    );
+    const isNotFound = computed(() => route.matched.some((record) => record.path === '/:pathMatch(.*)*'))
 
     const containerClass = computed(() => ({
-      "main-content-container": ![
-        "/",
-        "/features",
-        "/team",
-        "/faq",
-        "/contact",
-      ].includes(route.path),
-    }));
+      'main-content-container': !['/', '/features', '/team', '/faq', '/contact'].includes(route.path)
+    }))
 
-    onMounted(() => {
+    onMounted(async () => {
       setTimeout(() => {
-        isLoading.value = false;
-      }, 1000);
+        isLoading.value = false
+      }, 1000)
 
       watchEffect(() => {
         if (stateStoreInstance.open) {
-          document.body.classList.remove("sidebar-show");
-          document.body.classList.add("sidebar-hide");
+          document.body.classList.remove('sidebar-show')
+          document.body.classList.add('sidebar-hide')
         } else {
-          document.body.classList.remove("sidebar-hide");
-          document.body.classList.add("sidebar-show");
+          document.body.classList.remove('sidebar-hide')
+          document.body.classList.add('sidebar-show')
         }
-      });
-    });
+      })
+    })
 
     return {
       isLoading,
@@ -110,9 +106,10 @@ export default defineComponent({
       containerClass,
       route,
       isNotFound,
-    };
-  },
-});
+      snackbarStore
+    }
+  }
+})
 </script>
 
 <style lang="scss" scoped>

@@ -41,12 +41,17 @@
                   type="email"
                   label="example@example.com"
                   v-model="email"
-                  :rules="nameRules"
+                  :rules="emailRules"
                 ></v-text-field>
               </div>
               <div class="trezo-form-group">
                 <v-label class="d-block fw-medium text-black"> Password </v-label>
-                <v-text-field label="Type password" type="password" v-model="password"></v-text-field>
+                <v-text-field
+                  label="Type password"
+                  type="password"
+                  v-model="password"
+                  :rules="passwordRules"
+                ></v-text-field>
               </div>
               <!-- Error Message -->
               <div class="forgot-password">
@@ -54,13 +59,9 @@
                   Forgot Password?
                 </RouterLink>
               </div>
-              <button type="submit">
+              <button type="button" @click="handleLogin">
                 <i class="material-symbols-outlined"> login </i>
                 Sign In
-              </button>
-              <button type="submit" @click="validate">
-                <i class="material-symbols-outlined"> login </i>
-                Validate
               </button>
               <p class="info">
                 Don’t have an account.
@@ -94,25 +95,26 @@ const submit = handleSubmit((values) => {
 })
 </script> -->
 <script lang="ts">
-import { useField, useForm } from 'vee-validate'
+import { useUserStore } from '@/shared/store/user'
 import { ref } from 'vue'
 
 export default {
   name: 'SignIn',
   setup() {
-    const email = ref('email')
-    const password = ref('select')
+    const { userLogin } = useUserStore()
+    const email = ref('')
+    const password = ref('')
     const form = ref()
-    const nameRules = ref([
-      (v: any) => !!v || 'Name is required',
-      (v: any) => (v && v.length <= 10) || 'Name must be 10 characters or less'
-    ])
-    async function validate() {
+    const emailRules = ref([(v: string) => !!v || 'Email is required'])
+    const passwordRules = ref([(v: string) => !!v || 'Password is required'])
+
+    async function handleLogin() {
       const { valid } = await form.value.validate()
 
-      if (valid) alert('Form is valid')
+      if (!valid) return
+      await userLogin(email.value, password.value)
     }
-    return { email, password, nameRules, validate, form }
+    return { email, password, emailRules, passwordRules, handleLogin, form }
   }
 }
 </script>

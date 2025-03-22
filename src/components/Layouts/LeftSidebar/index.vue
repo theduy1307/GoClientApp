@@ -1,21 +1,12 @@
 <template>
-  <div
-    :class="[
-      'sidebar-area bg-white box-shadow',
-      { active: stateStoreInstance.open },
-    ]"
-    id="SidebarTheme"
-  >
+  <div :class="['sidebar-area bg-white box-shadow', { active: stateStoreInstance.open }]" id="SidebarTheme">
     <div class="logo bg-white">
       <RouterLink to="/dashboard" class="d-flex align-items-center">
         <v-img src="@/assets/images/logo-icon.png" alt="logo" />
         <span class="fw-bold text-black position-relative">Trezo</span>
       </RouterLink>
     </div>
-    <div
-      :class="['burger-menu', { active: stateStoreInstance.open }]"
-      @click="stateStoreInstance.onChange"
-    >
+    <div :class="['burger-menu', { active: stateStoreInstance.open }]" @click="stateStoreInstance.onChange">
       <span class="top-bar"></span>
       <span class="middle-bar"></span>
       <span class="bottom-bar"></span>
@@ -24,8 +15,26 @@
       <div class="sidebar-inner">
         <div class="sidebar-menu">
           <AccordionSlot>
-            <span class="sub-title">MAIN</span>
-            <AccordionItem>
+            <AccordionItem v-for="menu in listMenus" :key="menu.id">
+              <template v-slot:accordion-trigger>
+                <div class="title-header d-flex align-items-center justify-content-between ga-2">
+                  <div class="d-flex align-items-center ga-2">
+                    <span class="material-symbols-outlined">{{ menu.icon }}</span>
+                    <span class="title">{{ menu.name }}</span>
+                  </div>
+                  <i class="arrow-right ri-arrow-right-s-line"></i>
+                </div>
+              </template>
+
+              <template v-slot:accordion-content>
+                <ul class="sidebar-sub-menu">
+                  <li v-for="(sub, index) in menu.subMenus" :key="index" class="sidemenu-item">
+                    <RouterLink :to="`/${sub.url ?? ''}`" class="sidemenu-link"> {{ sub.name }} </RouterLink>
+                  </li>
+                </ul>
+              </template>
+            </AccordionItem>
+            <AccordionItem v-if="isAdmin">
               <template v-slot:accordion-trigger>
                 <div class="title-header d-flex align-items-center ga-2">
                   <span class="material-symbols-outlined">dashboard</span>
@@ -38,141 +47,83 @@
               <template v-slot:accordion-content>
                 <ul class="sidebar-sub-menu">
                   <li class="sidemenu-item">
-                    <RouterLink to="/dashboard" class="sidemenu-link">
-                      eCommerce
-                    </RouterLink>
+                    <RouterLink to="/dashboard" class="sidemenu-link"> eCommerce </RouterLink>
                   </li>
                   <li class="sidemenu-item">
                     <RouterLink to="/dashboard/crm" class="sidemenu-link">
                       CRM
-                      <span
-                        class="trezo-badge d-inline-block position-relative style-two"
-                      >
-                        Hot
-                      </span>
+                      <span class="trezo-badge d-inline-block position-relative style-two"> Hot </span>
                     </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/dashboard/project-management"
-                      class="sidemenu-link"
-                    >
+                    <RouterLink to="/dashboard/project-management" class="sidemenu-link">
                       Project Management
                     </RouterLink>
                   </li>
                   <li class="sidemenu-item">
                     <RouterLink to="/dashboard/lms" class="sidemenu-link">
                       LMS
-                      <span
-                        class="trezo-badge d-inline-block position-relative style-two"
-                      >
-                        Top
-                      </span>
+                      <span class="trezo-badge d-inline-block position-relative style-two"> Top </span>
                     </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/dashboard/help-desk" class="sidemenu-link">
-                      HelpDesk
-                    </RouterLink>
+                    <RouterLink to="/dashboard/help-desk" class="sidemenu-link"> HelpDesk </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/dashboard/analytics" class="sidemenu-link">
-                      Analytics
-                    </RouterLink>
+                    <RouterLink to="/dashboard/analytics" class="sidemenu-link"> Analytics </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/dashboard/crypto" class="sidemenu-link">
-                      Crypto
-                    </RouterLink>
+                    <RouterLink to="/dashboard/crypto" class="sidemenu-link"> Crypto </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/dashboard/sales" class="sidemenu-link">
-                      Sales
-                    </RouterLink>
+                    <RouterLink to="/dashboard/sales" class="sidemenu-link"> Sales </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/dashboard/hospital" class="sidemenu-link">
-                      Hospital
-                    </RouterLink>
+                    <RouterLink to="/dashboard/hospital" class="sidemenu-link"> Hospital </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/dashboard/marketing" class="sidemenu-link">
-                      Marketing
-                    </RouterLink>
+                    <RouterLink to="/dashboard/marketing" class="sidemenu-link"> Marketing </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/dashboard/nft" class="sidemenu-link">
-                      NFT
-                    </RouterLink>
+                    <RouterLink to="/dashboard/nft" class="sidemenu-link"> NFT </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/dashboard/saas" class="sidemenu-link">
-                      SaaS
-                    </RouterLink>
+                    <RouterLink to="/dashboard/saas" class="sidemenu-link"> SaaS </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/dashboard/real-estate"
-                      class="sidemenu-link"
-                    >
-                      Real Estate
-                    </RouterLink>
+                    <RouterLink to="/dashboard/real-estate" class="sidemenu-link"> Real Estate </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/dashboard/shipment" class="sidemenu-link">
-                      Shipment
-                    </RouterLink>
+                    <RouterLink to="/dashboard/shipment" class="sidemenu-link"> Shipment </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/dashboard/finance" class="sidemenu-link">
-                      Finance
-                    </RouterLink>
+                    <RouterLink to="/dashboard/finance" class="sidemenu-link"> Finance </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/dashboard/hrm" class="sidemenu-link">
-                      HRM
-                    </RouterLink>
+                    <RouterLink to="/dashboard/hrm" class="sidemenu-link"> HRM </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/dashboard/school" class="sidemenu-link">
-                      School
-                    </RouterLink>
+                    <RouterLink to="/dashboard/school" class="sidemenu-link"> School </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/dashboard/call-center"
-                      class="sidemenu-link"
-                    >
-                      Call Center
-                    </RouterLink>
+                    <RouterLink to="/dashboard/call-center" class="sidemenu-link"> Call Center </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/dashboard/pos-system"
-                      class="sidemenu-link"
-                    >
+                    <RouterLink to="/dashboard/pos-system" class="sidemenu-link">
                       POS System
-                      <span
-                        class="trezo-badge d-inline-block position-relative"
-                      >
-                        New
-                      </span>
+                      <span class="trezo-badge d-inline-block position-relative"> New </span>
                     </RouterLink>
                   </li>
                   <li class="sidemenu-item">
                     <RouterLink to="/dashboard/podcast" class="sidemenu-link">
                       Podcast
-                      <span
-                        class="trezo-badge d-inline-block position-relative"
-                      >
-                        New
-                      </span>
+                      <span class="trezo-badge d-inline-block position-relative"> New </span>
                     </RouterLink>
                   </li>
                 </ul>
               </template>
             </AccordionItem>
-            <AccordionItem>
+            <AccordionItem v-if="isAdmin">
               <template v-slot:accordion-trigger>
                 <div class="title-header d-flex align-items-center ga-2">
                   <span class="material-symbols-outlined">note_stack</span>
@@ -187,48 +138,38 @@
                     <RouterLink to="/" class="sidemenu-link"> Home </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/features" class="sidemenu-link">
-                      Features
-                    </RouterLink>
+                    <RouterLink to="/features" class="sidemenu-link"> Features </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/team" class="sidemenu-link">
-                      Our Team
-                    </RouterLink>
+                    <RouterLink to="/team" class="sidemenu-link"> Our Team </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/faq" class="sidemenu-link">
-                      FAQ’s
-                    </RouterLink>
+                    <RouterLink to="/faq" class="sidemenu-link"> FAQ’s </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/contact" class="sidemenu-link">
-                      Contact
-                    </RouterLink>
+                    <RouterLink to="/contact" class="sidemenu-link"> Contact </RouterLink>
                   </li>
                 </ul>
               </template>
             </AccordionItem>
-            <span class="sub-title">APPS</span>
-            <RouterLink to="/apps/to-do-list" class="sidebar-menu-link">
-              <span class="material-symbols-outlined">
-                format_list_bulleted
-              </span>
+            <span class="sub-title" v-if="isAdmin">APPS</span>
+            <RouterLink to="/apps/to-do-list" class="sidebar-menu-link" v-if="isAdmin">
+              <span class="material-symbols-outlined"> format_list_bulleted </span>
               <span class="title">To Do List</span>
             </RouterLink>
-            <RouterLink to="/apps/calendar" class="sidebar-menu-link">
+            <RouterLink to="/apps/calendar" class="sidebar-menu-link" v-if="isAdmin">
               <span class="material-symbols-outlined">date_range</span>
               <span class="title">Calendar</span>
             </RouterLink>
-            <RouterLink to="/apps/contacts" class="sidebar-menu-link">
+            <RouterLink to="/apps/contacts" class="sidebar-menu-link" v-if="isAdmin">
               <span class="material-symbols-outlined">contact_page</span>
               <span class="title">Contacts</span>
             </RouterLink>
-            <RouterLink to="/apps/chat" class="sidebar-menu-link">
+            <RouterLink to="/apps/chat" class="sidebar-menu-link" v-if="isAdmin">
               <span class="material-symbols-outlined">chat</span>
               <span class="title">Chat</span>
             </RouterLink>
-            <AccordionItem>
+            <AccordionItem v-if="isAdmin">
               <template v-slot:accordion-trigger>
                 <div class="title-header d-flex align-items-center ga-2">
                   <span class="material-symbols-outlined">mail</span>
@@ -241,28 +182,22 @@
               <template v-slot:accordion-content>
                 <ul class="sidebar-sub-menu">
                   <li class="sidemenu-item">
-                    <RouterLink to="/apps/email/inbox" class="sidemenu-link">
-                      Inbox
-                    </RouterLink>
+                    <RouterLink to="/apps/email/inbox" class="sidemenu-link"> Inbox </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/apps/email/compose" class="sidemenu-link">
-                      Compose
-                    </RouterLink>
+                    <RouterLink to="/apps/email/compose" class="sidemenu-link"> Compose </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/apps/email/read" class="sidemenu-link">
-                      Read
-                    </RouterLink>
+                    <RouterLink to="/apps/email/read" class="sidemenu-link"> Read </RouterLink>
                   </li>
                 </ul>
               </template>
             </AccordionItem>
-            <RouterLink to="/apps/kanban-board" class="sidebar-menu-link">
+            <RouterLink to="/apps/kanban-board" class="sidebar-menu-link" v-if="isAdmin">
               <span class="material-symbols-outlined">team_dashboard</span>
               <span class="title">Kanban Board</span>
             </RouterLink>
-            <AccordionItem>
+            <AccordionItem v-if="isAdmin">
               <template v-slot:accordion-trigger>
                 <div class="title-header d-flex align-items-center ga-2">
                   <span class="material-symbols-outlined">folder_open</span>
@@ -275,66 +210,31 @@
               <template v-slot:accordion-content>
                 <ul class="sidebar-sub-menu">
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/apps/file-manager/my-drive"
-                      class="sidemenu-link"
-                    >
-                      My Drive
-                    </RouterLink>
+                    <RouterLink to="/apps/file-manager/my-drive" class="sidemenu-link"> My Drive </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/apps/file-manager/assets"
-                      class="sidemenu-link"
-                    >
-                      Assets
-                    </RouterLink>
+                    <RouterLink to="/apps/file-manager/assets" class="sidemenu-link"> Assets </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/apps/file-manager/projects"
-                      class="sidemenu-link"
-                    >
-                      Projects
-                    </RouterLink>
+                    <RouterLink to="/apps/file-manager/projects" class="sidemenu-link"> Projects </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/apps/file-manager/personal"
-                      class="sidemenu-link"
-                    >
-                      Personal
-                    </RouterLink>
+                    <RouterLink to="/apps/file-manager/personal" class="sidemenu-link"> Personal </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/apps/file-manager/applications"
-                      class="sidemenu-link"
-                    >
-                      Applications
-                    </RouterLink>
+                    <RouterLink to="/apps/file-manager/applications" class="sidemenu-link"> Applications </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/apps/file-manager/documents"
-                      class="sidemenu-link"
-                    >
-                      Documents
-                    </RouterLink>
+                    <RouterLink to="/apps/file-manager/documents" class="sidemenu-link"> Documents </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/apps/file-manager/media"
-                      class="sidemenu-link"
-                    >
-                      Media
-                    </RouterLink>
+                    <RouterLink to="/apps/file-manager/media" class="sidemenu-link"> Media </RouterLink>
                   </li>
                 </ul>
               </template>
             </AccordionItem>
-            <span class="sub-title">PAGES</span>
-            <AccordionItem>
+            <span class="sub-title" v-if="isAdmin">PAGES</span>
+            <AccordionItem v-if="isAdmin">
               <template v-slot:accordion-trigger>
                 <div class="title-header d-flex align-items-center ga-2">
                   <span class="material-symbols-outlined">shopping_cart</span>
@@ -346,140 +246,66 @@
               <template v-slot:accordion-content>
                 <ul class="sidebar-sub-menu">
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/ecommerce/products-grid"
-                      class="sidemenu-link"
-                    >
-                      Products Grid
-                    </RouterLink>
+                    <RouterLink to="/ecommerce/products-grid" class="sidemenu-link"> Products Grid </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/ecommerce/products-list"
-                      class="sidemenu-link"
-                    >
-                      Products List
-                    </RouterLink>
+                    <RouterLink to="/ecommerce/products-list" class="sidemenu-link"> Products List </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/ecommerce/product-details"
-                      class="sidemenu-link"
-                    >
-                      Product Details
-                    </RouterLink>
+                    <RouterLink to="/ecommerce/product-details" class="sidemenu-link"> Product Details </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/ecommerce/create-product"
-                      class="sidemenu-link"
-                    >
-                      Create Product
-                    </RouterLink>
+                    <RouterLink to="/ecommerce/create-product" class="sidemenu-link"> Create Product </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/ecommerce/edit-product"
-                      class="sidemenu-link"
-                    >
-                      Edit Product
-                    </RouterLink>
+                    <RouterLink to="/ecommerce/edit-product" class="sidemenu-link"> Edit Product </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/ecommerce/cart" class="sidemenu-link">
-                      Cart
-                    </RouterLink>
+                    <RouterLink to="/ecommerce/cart" class="sidemenu-link"> Cart </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/ecommerce/checkout" class="sidemenu-link">
-                      Checkout
-                    </RouterLink>
+                    <RouterLink to="/ecommerce/checkout" class="sidemenu-link"> Checkout </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/ecommerce/orders" class="sidemenu-link">
-                      Orders
-                    </RouterLink>
+                    <RouterLink to="/ecommerce/orders" class="sidemenu-link"> Orders </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/ecommerce/order-details"
-                      class="sidemenu-link"
-                    >
-                      Order Details
-                    </RouterLink>
+                    <RouterLink to="/ecommerce/order-details" class="sidemenu-link"> Order Details </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/ecommerce/create-order"
-                      class="sidemenu-link"
-                    >
-                      Create Order
-                    </RouterLink>
+                    <RouterLink to="/ecommerce/create-order" class="sidemenu-link"> Create Order </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/ecommerce/order-tracking"
-                      class="sidemenu-link"
-                    >
-                      Order Tracking
-                    </RouterLink>
+                    <RouterLink to="/ecommerce/order-tracking" class="sidemenu-link"> Order Tracking </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/ecommerce/customers" class="sidemenu-link">
-                      Customers
-                    </RouterLink>
+                    <RouterLink to="/ecommerce/customers" class="sidemenu-link"> Customers </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/ecommerce/customer-details"
-                      class="sidemenu-link"
-                    >
-                      Customer Details
-                    </RouterLink>
+                    <RouterLink to="/ecommerce/customer-details" class="sidemenu-link"> Customer Details </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/ecommerce/categories"
-                      class="sidemenu-link"
-                    >
-                      Categories
-                    </RouterLink>
+                    <RouterLink to="/ecommerce/categories" class="sidemenu-link"> Categories </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/ecommerce/sellers" class="sidemenu-link">
-                      Sellers
-                    </RouterLink>
+                    <RouterLink to="/ecommerce/sellers" class="sidemenu-link"> Sellers </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/ecommerce/seller-details"
-                      class="sidemenu-link"
-                    >
-                      Seller Details
-                    </RouterLink>
+                    <RouterLink to="/ecommerce/seller-details" class="sidemenu-link"> Seller Details </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/ecommerce/create-seller"
-                      class="sidemenu-link"
-                    >
-                      Create Seller
-                    </RouterLink>
+                    <RouterLink to="/ecommerce/create-seller" class="sidemenu-link"> Create Seller </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/ecommerce/reviews" class="sidemenu-link">
-                      Reviews
-                    </RouterLink>
+                    <RouterLink to="/ecommerce/reviews" class="sidemenu-link"> Reviews </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/ecommerce/refunds" class="sidemenu-link">
-                      Refunds
-                    </RouterLink>
+                    <RouterLink to="/ecommerce/refunds" class="sidemenu-link"> Refunds </RouterLink>
                   </li>
                 </ul>
               </template>
             </AccordionItem>
-            <AccordionItem>
+            <AccordionItem v-if="isAdmin">
               <template v-slot:accordion-trigger>
                 <div class="title-header d-flex align-items-center ga-2">
                   <span class="material-symbols-outlined">handshake</span>
@@ -491,29 +317,21 @@
               <template v-slot:accordion-content>
                 <ul class="sidebar-sub-menu">
                   <li class="sidemenu-item">
-                    <RouterLink to="/crm/contacts" class="sidemenu-link">
-                      Contacts
-                    </RouterLink>
+                    <RouterLink to="/crm/contacts" class="sidemenu-link"> Contacts </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/crm/customers" class="sidemenu-link">
-                      Customers
-                    </RouterLink>
+                    <RouterLink to="/crm/customers" class="sidemenu-link"> Customers </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/crm/leads" class="sidemenu-link">
-                      Leads
-                    </RouterLink>
+                    <RouterLink to="/crm/leads" class="sidemenu-link"> Leads </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/crm/deals" class="sidemenu-link">
-                      Deals
-                    </RouterLink>
+                    <RouterLink to="/crm/deals" class="sidemenu-link"> Deals </RouterLink>
                   </li>
                 </ul>
               </template>
             </AccordionItem>
-            <AccordionItem>
+            <AccordionItem v-if="isAdmin">
               <template v-slot:accordion-trigger>
                 <div class="title-header d-flex align-items-center ga-2">
                   <span class="material-symbols-outlined">description</span>
@@ -525,65 +343,36 @@
               <template v-slot:accordion-content>
                 <ul class="sidebar-sub-menu">
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/project-management/project-overview"
-                      class="sidemenu-link"
-                    >
+                    <RouterLink to="/project-management/project-overview" class="sidemenu-link">
                       Project Overview
                     </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/project-management/projects-list"
-                      class="sidemenu-link"
-                    >
+                    <RouterLink to="/project-management/projects-list" class="sidemenu-link">
                       Projects List
                     </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/project-management/create-project"
-                      class="sidemenu-link"
-                    >
+                    <RouterLink to="/project-management/create-project" class="sidemenu-link">
                       Create Project
                     </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/project-management/clients"
-                      class="sidemenu-link"
-                    >
-                      Clients
-                    </RouterLink>
+                    <RouterLink to="/project-management/clients" class="sidemenu-link"> Clients </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/project-management/teams"
-                      class="sidemenu-link"
-                    >
-                      Teams
-                    </RouterLink>
+                    <RouterLink to="/project-management/teams" class="sidemenu-link"> Teams </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/project-management/kanban-board"
-                      class="sidemenu-link"
-                    >
-                      Kanban Board
-                    </RouterLink>
+                    <RouterLink to="/project-management/kanban-board" class="sidemenu-link"> Kanban Board </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/project-management/users"
-                      class="sidemenu-link"
-                    >
-                      Users
-                    </RouterLink>
+                    <RouterLink to="/project-management/users" class="sidemenu-link"> Users </RouterLink>
                   </li>
                 </ul>
               </template>
             </AccordionItem>
-            <AccordionItem>
+            <AccordionItem v-if="isAdmin">
               <template v-slot:accordion-trigger>
                 <div class="title-header d-flex align-items-center ga-2">
                   <span class="material-symbols-outlined">auto_stories</span>
@@ -595,39 +384,27 @@
               <template v-slot:accordion-content>
                 <ul class="sidebar-sub-menu">
                   <li class="sidemenu-item">
-                    <RouterLink to="/lms/courses-list" class="sidemenu-link">
-                      Courses List
-                    </RouterLink>
+                    <RouterLink to="/lms/courses-list" class="sidemenu-link"> Courses List </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/lms/course-details" class="sidemenu-link">
-                      Course Details
-                    </RouterLink>
+                    <RouterLink to="/lms/course-details" class="sidemenu-link"> Course Details </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/lms/lesson-preview" class="sidemenu-link">
-                      Lesson Preview
-                    </RouterLink>
+                    <RouterLink to="/lms/lesson-preview" class="sidemenu-link"> Lesson Preview </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/lms/create-course" class="sidemenu-link">
-                      Create Course
-                    </RouterLink>
+                    <RouterLink to="/lms/create-course" class="sidemenu-link"> Create Course </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/lms/edit-course" class="sidemenu-link">
-                      Edit Course
-                    </RouterLink>
+                    <RouterLink to="/lms/edit-course" class="sidemenu-link"> Edit Course </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/lms/instructors" class="sidemenu-link">
-                      Instructors
-                    </RouterLink>
+                    <RouterLink to="/lms/instructors" class="sidemenu-link"> Instructors </RouterLink>
                   </li>
                 </ul>
               </template>
             </AccordionItem>
-            <AccordionItem>
+            <AccordionItem v-if="isAdmin">
               <template v-slot:accordion-trigger>
                 <div class="title-header d-flex align-items-center ga-2">
                   <span class="material-symbols-outlined">support</span>
@@ -639,32 +416,21 @@
               <template v-slot:accordion-content>
                 <ul class="sidebar-sub-menu">
                   <li class="sidemenu-item">
-                    <RouterLink to="/help-desk/tickets" class="sidemenu-link">
-                      Tickets
-                    </RouterLink>
+                    <RouterLink to="/help-desk/tickets" class="sidemenu-link"> Tickets </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/help-desk/ticket-details"
-                      class="sidemenu-link"
-                    >
-                      Ticket Details
-                    </RouterLink>
+                    <RouterLink to="/help-desk/ticket-details" class="sidemenu-link"> Ticket Details </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/help-desk/agents" class="sidemenu-link">
-                      Agents
-                    </RouterLink>
+                    <RouterLink to="/help-desk/agents" class="sidemenu-link"> Agents </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/help-desk/reports" class="sidemenu-link">
-                      Reports
-                    </RouterLink>
+                    <RouterLink to="/help-desk/reports" class="sidemenu-link"> Reports </RouterLink>
                   </li>
                 </ul>
               </template>
             </AccordionItem>
-            <AccordionItem>
+            <AccordionItem v-if="isAdmin">
               <template v-slot:accordion-trigger>
                 <div class="title-header d-flex align-items-center ga-2">
                   <span class="material-symbols-outlined">store</span>
@@ -676,70 +442,35 @@
               <template v-slot:accordion-content>
                 <ul class="sidebar-sub-menu">
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/nft-marketplace/marketplace"
-                      class="sidemenu-link"
-                    >
-                      Marketplace
-                    </RouterLink>
+                    <RouterLink to="/nft-marketplace/marketplace" class="sidemenu-link"> Marketplace </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/nft-marketplace/explore-all"
-                      class="sidemenu-link"
-                    >
-                      Explore All
-                    </RouterLink>
+                    <RouterLink to="/nft-marketplace/explore-all" class="sidemenu-link"> Explore All </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/nft-marketplace/live-auction"
-                      class="sidemenu-link"
-                    >
-                      Live Auction
-                    </RouterLink>
+                    <RouterLink to="/nft-marketplace/live-auction" class="sidemenu-link"> Live Auction </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/nft-marketplace/nft-details"
-                      class="sidemenu-link"
-                    >
-                      NFT Details
-                    </RouterLink>
+                    <RouterLink to="/nft-marketplace/nft-details" class="sidemenu-link"> NFT Details </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/nft-marketplace/creators"
-                      class="sidemenu-link"
-                    >
-                      Creators
-                    </RouterLink>
+                    <RouterLink to="/nft-marketplace/creators" class="sidemenu-link"> Creators </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/nft-marketplace/creator-details"
-                      class="sidemenu-link"
-                    >
+                    <RouterLink to="/nft-marketplace/creator-details" class="sidemenu-link">
                       Creator Details
                     </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/nft-marketplace/wallet-connect"
-                      class="sidemenu-link"
-                    >
-                      Wallet Connect
-                    </RouterLink>
+                    <RouterLink to="/nft-marketplace/wallet-connect" class="sidemenu-link"> Wallet Connect </RouterLink>
                   </li>
                 </ul>
               </template>
             </AccordionItem>
-            <AccordionItem>
+            <AccordionItem v-if="isAdmin">
               <template v-slot:accordion-trigger>
                 <div class="title-header d-flex align-items-center ga-2">
-                  <span class="material-symbols-outlined">
-                    real_estate_agent
-                  </span>
+                  <span class="material-symbols-outlined"> real_estate_agent </span>
                   <span class="title">Real Estate</span>
                   <i class="arrow-right ri-arrow-right-s-line"></i>
                 </div>
@@ -748,65 +479,34 @@
               <template v-slot:accordion-content>
                 <ul class="sidebar-sub-menu">
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/real-estate/real-estate-customers"
-                      class="sidemenu-link"
-                    >
+                    <RouterLink to="/real-estate/real-estate-customers" class="sidemenu-link">
                       Real Estate Customers
                     </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/real-estate/property-list"
-                      class="sidemenu-link"
-                    >
-                      Property List
-                    </RouterLink>
+                    <RouterLink to="/real-estate/property-list" class="sidemenu-link"> Property List </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/real-estate/property-overview"
-                      class="sidemenu-link"
-                    >
+                    <RouterLink to="/real-estate/property-overview" class="sidemenu-link">
                       Property Overview
                     </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/real-estate/add-property"
-                      class="sidemenu-link"
-                    >
-                      Add Property
-                    </RouterLink>
+                    <RouterLink to="/real-estate/add-property" class="sidemenu-link"> Add Property </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/real-estate/agent-list"
-                      class="sidemenu-link"
-                    >
-                      Agent list
-                    </RouterLink>
+                    <RouterLink to="/real-estate/agent-list" class="sidemenu-link"> Agent list </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/real-estate/agent-overview"
-                      class="sidemenu-link"
-                    >
-                      Agent Overview
-                    </RouterLink>
+                    <RouterLink to="/real-estate/agent-overview" class="sidemenu-link"> Agent Overview </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/real-estate/add-agent"
-                      class="sidemenu-link"
-                    >
-                      Add Agent
-                    </RouterLink>
+                    <RouterLink to="/real-estate/add-agent" class="sidemenu-link"> Add Agent </RouterLink>
                   </li>
                 </ul>
               </template>
             </AccordionItem>
-            <AccordionItem>
+            <AccordionItem v-if="isAdmin">
               <template v-slot:accordion-trigger>
                 <div class="title-header d-flex align-items-center ga-2">
                   <span class="material-symbols-outlined">support</span>
@@ -818,19 +518,15 @@
               <template v-slot:accordion-content>
                 <ul class="sidebar-sub-menu">
                   <li class="sidemenu-item">
-                    <RouterLink to="/finance/wallet" class="sidemenu-link">
-                      Wallet
-                    </RouterLink>
+                    <RouterLink to="/finance/wallet" class="sidemenu-link"> Wallet </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/finance/transaction" class="sidemenu-link">
-                      Transaction
-                    </RouterLink>
+                    <RouterLink to="/finance/transaction" class="sidemenu-link"> Transaction </RouterLink>
                   </li>
                 </ul>
               </template>
             </AccordionItem>
-            <AccordionItem>
+            <AccordionItem v-if="isAdmin">
               <template v-slot:accordion-trigger>
                 <div class="title-header d-flex align-items-center ga-2">
                   <span class="material-symbols-outlined">local_activity</span>
@@ -842,43 +538,24 @@
               <template v-slot:accordion-content>
                 <ul class="sidebar-sub-menu">
                   <li class="sidemenu-item">
-                    <RouterLink to="/events/events-grid" class="sidemenu-link">
-                      Events Grid
-                    </RouterLink>
+                    <RouterLink to="/events/events-grid" class="sidemenu-link"> Events Grid </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/events/events-list" class="sidemenu-link">
-                      Events List
-                    </RouterLink>
+                    <RouterLink to="/events/events-list" class="sidemenu-link"> Events List </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/events/event-details"
-                      class="sidemenu-link"
-                    >
-                      Event Details
-                    </RouterLink>
+                    <RouterLink to="/events/event-details" class="sidemenu-link"> Event Details </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/events/create-an-event"
-                      class="sidemenu-link"
-                    >
-                      Create An Event
-                    </RouterLink>
+                    <RouterLink to="/events/create-an-event" class="sidemenu-link"> Create An Event </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/events/edit-an-event"
-                      class="sidemenu-link"
-                    >
-                      Edit An Event
-                    </RouterLink>
+                    <RouterLink to="/events/edit-an-event" class="sidemenu-link"> Edit An Event </RouterLink>
                   </li>
                 </ul>
               </template>
             </AccordionItem>
-            <AccordionItem>
+            <AccordionItem v-if="isAdmin">
               <template v-slot:accordion-trigger>
                 <div class="title-header d-flex align-items-center ga-2">
                   <span class="material-symbols-outlined">share</span>
@@ -890,19 +567,15 @@
               <template v-slot:accordion-content>
                 <ul class="sidebar-sub-menu">
                   <li class="sidemenu-item">
-                    <RouterLink to="/social/profile" class="sidemenu-link">
-                      Profile
-                    </RouterLink>
+                    <RouterLink to="/social/profile" class="sidemenu-link"> Profile </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/social/settings" class="sidemenu-link">
-                      Settings
-                    </RouterLink>
+                    <RouterLink to="/social/settings" class="sidemenu-link"> Settings </RouterLink>
                   </li>
                 </ul>
               </template>
             </AccordionItem>
-            <AccordionItem>
+            <AccordionItem v-if="isAdmin">
               <template v-slot:accordion-trigger>
                 <div class="title-header d-flex align-items-center ga-2">
                   <span class="material-symbols-outlined">content_paste</span>
@@ -914,38 +587,21 @@
               <template v-slot:accordion-content>
                 <ul class="sidebar-sub-menu">
                   <li class="sidemenu-item">
-                    <RouterLink to="/invoices" class="sidemenu-link">
-                      Invoices
-                    </RouterLink>
+                    <RouterLink to="/invoices" class="sidemenu-link"> Invoices </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/invoices/invoice-details"
-                      class="sidemenu-link"
-                    >
-                      Invoice Details
-                    </RouterLink>
+                    <RouterLink to="/invoices/invoice-details" class="sidemenu-link"> Invoice Details </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/invoices/create-invoice"
-                      class="sidemenu-link"
-                    >
-                      Create Invoice
-                    </RouterLink>
+                    <RouterLink to="/invoices/create-invoice" class="sidemenu-link"> Create Invoice </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/invoices/edit-invoice"
-                      class="sidemenu-link"
-                    >
-                      Edit Invoice
-                    </RouterLink>
+                    <RouterLink to="/invoices/edit-invoice" class="sidemenu-link"> Edit Invoice </RouterLink>
                   </li>
                 </ul>
               </template>
             </AccordionItem>
-            <AccordionItem>
+            <AccordionItem v-if="isAdmin">
               <template v-slot:accordion-trigger>
                 <div class="title-header d-flex align-items-center ga-2">
                   <span class="material-symbols-outlined">person</span>
@@ -957,24 +613,18 @@
               <template v-slot:accordion-content>
                 <ul class="sidebar-sub-menu">
                   <li class="sidemenu-item">
-                    <RouterLink to="/users/team-members" class="sidemenu-link">
-                      Team Members
-                    </RouterLink>
+                    <RouterLink to="/users/team-members" class="sidemenu-link"> Team Members </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/users/users-list" class="sidemenu-link">
-                      Users List
-                    </RouterLink>
+                    <RouterLink to="/users/users-list" class="sidemenu-link"> Users List </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/users/add-user" class="sidemenu-link">
-                      Add User
-                    </RouterLink>
+                    <RouterLink to="/users/add-user" class="sidemenu-link"> Add User </RouterLink>
                   </li>
                 </ul>
               </template>
             </AccordionItem>
-            <AccordionItem>
+            <AccordionItem v-if="isAdmin">
               <template v-slot:accordion-trigger>
                 <div class="title-header d-flex align-items-center ga-2">
                   <span class="material-symbols-outlined">account_box</span>
@@ -986,33 +636,24 @@
               <template v-slot:accordion-content>
                 <ul class="sidebar-sub-menu">
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/profile/user-profile"
-                      class="sidemenu-link"
-                    >
-                      User Profile
-                    </RouterLink>
+                    <RouterLink to="/profile/user-profile" class="sidemenu-link"> User Profile </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/profile/teams" class="sidemenu-link">
-                      Teams
-                    </RouterLink>
+                    <RouterLink to="/profile/teams" class="sidemenu-link"> Teams </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/profile/projects" class="sidemenu-link">
-                      Projects
-                    </RouterLink>
+                    <RouterLink to="/profile/projects" class="sidemenu-link"> Projects </RouterLink>
                   </li>
                 </ul>
               </template>
             </AccordionItem>
-            <RouterLink to="/starter" class="sidebar-menu-link">
+            <RouterLink to="/starter" class="sidebar-menu-link" v-if="isAdmin">
               <span class="material-symbols-outlined">star_border</span>
               <span class="title">Starter</span>
             </RouterLink>
 
-            <span class="sub-title">MODULES</span>
-            <AccordionItem>
+            <span class="sub-title" v-if="isAdmin">MODULES</span>
+            <AccordionItem v-if="isAdmin">
               <template v-slot:accordion-trigger>
                 <div class="title-header d-flex align-items-center ga-2">
                   <span class="material-symbols-outlined">emoji_emotions</span>
@@ -1024,22 +665,15 @@
               <template v-slot:accordion-content>
                 <ul class="sidebar-sub-menu">
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/icons/material-symbols"
-                      class="sidemenu-link"
-                    >
-                      Material Symbols
-                    </RouterLink>
+                    <RouterLink to="/icons/material-symbols" class="sidemenu-link"> Material Symbols </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/icons/remixicon" class="sidemenu-link">
-                      Remixicon
-                    </RouterLink>
+                    <RouterLink to="/icons/remixicon" class="sidemenu-link"> Remixicon </RouterLink>
                   </li>
                 </ul>
               </template>
             </AccordionItem>
-            <AccordionItem>
+            <AccordionItem v-if="isAdmin">
               <template v-slot:accordion-trigger>
                 <div class="title-header d-flex align-items-center ga-2">
                   <span class="material-symbols-outlined">qr_code_scanner</span>
@@ -1051,278 +685,140 @@
               <template v-slot:accordion-content>
                 <ul class="sidebar-sub-menu">
                   <li class="sidemenu-item">
-                    <RouterLink to="/ui-elements/alerts" class="sidemenu-link">
-                      Alerts
-                    </RouterLink>
+                    <RouterLink to="/ui-elements/alerts" class="sidemenu-link"> Alerts </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/ui-elements/autocomplete"
-                      class="sidemenu-link"
-                    >
-                      Autocomplete
-                    </RouterLink>
+                    <RouterLink to="/ui-elements/autocomplete" class="sidemenu-link"> Autocomplete </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/ui-elements/avatars" class="sidemenu-link">
-                      Avatars
-                    </RouterLink>
+                    <RouterLink to="/ui-elements/avatars" class="sidemenu-link"> Avatars </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/ui-elements/accordion"
-                      class="sidemenu-link"
-                    >
-                      Accordion
-                    </RouterLink>
+                    <RouterLink to="/ui-elements/accordion" class="sidemenu-link"> Accordion </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/ui-elements/badges" class="sidemenu-link">
-                      Badges
-                    </RouterLink>
+                    <RouterLink to="/ui-elements/badges" class="sidemenu-link"> Badges </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/ui-elements/breadcrumb"
-                      class="sidemenu-link"
-                    >
-                      Breadcrumb
-                    </RouterLink>
+                    <RouterLink to="/ui-elements/breadcrumb" class="sidemenu-link"> Breadcrumb </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/ui-elements/button-toggle"
-                      class="sidemenu-link"
-                    >
-                      Button Toggle
-                    </RouterLink>
+                    <RouterLink to="/ui-elements/button-toggle" class="sidemenu-link"> Button Toggle </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/ui-elements/buttons" class="sidemenu-link">
-                      Buttons
-                    </RouterLink>
+                    <RouterLink to="/ui-elements/buttons" class="sidemenu-link"> Buttons </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/ui-elements/cards" class="sidemenu-link">
-                      Cards
-                    </RouterLink>
+                    <RouterLink to="/ui-elements/cards" class="sidemenu-link"> Cards </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/ui-elements/carousels"
-                      class="sidemenu-link"
-                    >
-                      Carousels
-                    </RouterLink>
+                    <RouterLink to="/ui-elements/carousels" class="sidemenu-link"> Carousels </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/ui-elements/checkbox"
-                      class="sidemenu-link"
-                    >
-                      Checkbox
-                    </RouterLink>
+                    <RouterLink to="/ui-elements/checkbox" class="sidemenu-link"> Checkbox </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/ui-elements/chips" class="sidemenu-link">
-                      Chips
-                    </RouterLink>
+                    <RouterLink to="/ui-elements/chips" class="sidemenu-link"> Chips </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/ui-elements/color-picker"
-                      class="sidemenu-link"
-                    >
-                      Color Picker
-                    </RouterLink>
+                    <RouterLink to="/ui-elements/color-picker" class="sidemenu-link"> Color Picker </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/ui-elements/datepicker"
-                      class="sidemenu-link"
-                    >
-                      Datepicker
-                    </RouterLink>
+                    <RouterLink to="/ui-elements/datepicker" class="sidemenu-link"> Datepicker </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/ui-elements/dialog" class="sidemenu-link">
-                      Dialog
-                    </RouterLink>
+                    <RouterLink to="/ui-elements/dialog" class="sidemenu-link"> Dialog </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/ui-elements/divider" class="sidemenu-link">
-                      Divider
-                    </RouterLink>
+                    <RouterLink to="/ui-elements/divider" class="sidemenu-link"> Divider </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/ui-elements/drag-drop"
-                      class="sidemenu-link"
-                    >
-                      Drag & Drop
-                    </RouterLink>
+                    <RouterLink to="/ui-elements/drag-drop" class="sidemenu-link"> Drag & Drop </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/ui-elements/expansion"
-                      class="sidemenu-link"
-                    >
-                      Expansion
-                    </RouterLink>
+                    <RouterLink to="/ui-elements/expansion" class="sidemenu-link"> Expansion </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/ui-elements/grid" class="sidemenu-link">
-                      Grid
-                    </RouterLink>
+                    <RouterLink to="/ui-elements/grid" class="sidemenu-link"> Grid </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/ui-elements/icon" class="sidemenu-link">
-                      Icon
-                    </RouterLink>
+                    <RouterLink to="/ui-elements/icon" class="sidemenu-link"> Icon </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/ui-elements/images" class="sidemenu-link">
-                      Images
-                    </RouterLink>
+                    <RouterLink to="/ui-elements/images" class="sidemenu-link"> Images </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/ui-elements/input" class="sidemenu-link">
-                      Input
-                    </RouterLink>
+                    <RouterLink to="/ui-elements/input" class="sidemenu-link"> Input </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/ui-elements/list" class="sidemenu-link">
-                      List
-                    </RouterLink>
+                    <RouterLink to="/ui-elements/list" class="sidemenu-link"> List </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/ui-elements/listbox" class="sidemenu-link">
-                      Listbox
-                    </RouterLink>
+                    <RouterLink to="/ui-elements/listbox" class="sidemenu-link"> Listbox </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/ui-elements/menus" class="sidemenu-link">
-                      Menus
-                    </RouterLink>
+                    <RouterLink to="/ui-elements/menus" class="sidemenu-link"> Menus </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/ui-elements/navigation-drawers"
-                      class="sidemenu-link"
-                    >
+                    <RouterLink to="/ui-elements/navigation-drawers" class="sidemenu-link">
                       Navigation Drawers
                     </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/ui-elements/pagination"
-                      class="sidemenu-link"
-                    >
-                      Pagination
-                    </RouterLink>
+                    <RouterLink to="/ui-elements/pagination" class="sidemenu-link"> Pagination </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/ui-elements/progress-bar"
-                      class="sidemenu-link"
-                    >
-                      Progress Bar
-                    </RouterLink>
+                    <RouterLink to="/ui-elements/progress-bar" class="sidemenu-link"> Progress Bar </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/ui-elements/radio" class="sidemenu-link">
-                      Radio
-                    </RouterLink>
+                    <RouterLink to="/ui-elements/radio" class="sidemenu-link"> Radio </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/ui-elements/select" class="sidemenu-link">
-                      Select
-                    </RouterLink>
+                    <RouterLink to="/ui-elements/select" class="sidemenu-link"> Select </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/ui-elements/switches"
-                      class="sidemenu-link"
-                    >
-                      Switches
-                    </RouterLink>
+                    <RouterLink to="/ui-elements/switches" class="sidemenu-link"> Switches </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/ui-elements/slider" class="sidemenu-link">
-                      Slider
-                    </RouterLink>
+                    <RouterLink to="/ui-elements/slider" class="sidemenu-link"> Slider </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/ui-elements/spacing" class="sidemenu-link">
-                      Spacing
-                    </RouterLink>
+                    <RouterLink to="/ui-elements/spacing" class="sidemenu-link"> Spacing </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/ui-elements/snackbar"
-                      class="sidemenu-link"
-                    >
-                      Snackbar
-                    </RouterLink>
+                    <RouterLink to="/ui-elements/snackbar" class="sidemenu-link"> Snackbar </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/ui-elements/stepper" class="sidemenu-link">
-                      Stepper
-                    </RouterLink>
+                    <RouterLink to="/ui-elements/stepper" class="sidemenu-link"> Stepper </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/ui-elements/table" class="sidemenu-link">
-                      Table
-                    </RouterLink>
+                    <RouterLink to="/ui-elements/table" class="sidemenu-link"> Table </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/ui-elements/text-fields"
-                      class="sidemenu-link"
-                    >
-                      Text Fields
-                    </RouterLink>
+                    <RouterLink to="/ui-elements/text-fields" class="sidemenu-link"> Text Fields </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/ui-elements/tabs" class="sidemenu-link">
-                      Tabs
-                    </RouterLink>
+                    <RouterLink to="/ui-elements/tabs" class="sidemenu-link"> Tabs </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/ui-elements/toolbar" class="sidemenu-link">
-                      Toolbar
-                    </RouterLink>
+                    <RouterLink to="/ui-elements/toolbar" class="sidemenu-link"> Toolbar </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/ui-elements/tooltip" class="sidemenu-link">
-                      Tooltip
-                    </RouterLink>
+                    <RouterLink to="/ui-elements/tooltip" class="sidemenu-link"> Tooltip </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/ui-elements/typography"
-                      class="sidemenu-link"
-                    >
-                      Typography
-                    </RouterLink>
+                    <RouterLink to="/ui-elements/typography" class="sidemenu-link"> Typography </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/ui-elements/videos" class="sidemenu-link">
-                      Videos
-                    </RouterLink>
+                    <RouterLink to="/ui-elements/videos" class="sidemenu-link"> Videos </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/ui-elements/utilities"
-                      class="sidemenu-link"
-                    >
-                      _Utilities
-                    </RouterLink>
+                    <RouterLink to="/ui-elements/utilities" class="sidemenu-link"> _Utilities </RouterLink>
                   </li>
                 </ul>
               </template>
             </AccordionItem>
-            <AccordionItem>
+            <AccordionItem v-if="isAdmin">
               <template v-slot:accordion-trigger>
                 <div class="title-header d-flex align-items-center ga-2">
                   <span class="material-symbols-outlined">table_chart</span>
@@ -1334,19 +830,15 @@
               <template v-slot:accordion-content>
                 <ul class="sidebar-sub-menu">
                   <li class="sidemenu-item">
-                    <RouterLink to="/tables/basic-table" class="sidemenu-link">
-                      Basic Table
-                    </RouterLink>
+                    <RouterLink to="/tables/basic-table" class="sidemenu-link"> Basic Table </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/tables/data-table" class="sidemenu-link">
-                      Data Table
-                    </RouterLink>
+                    <RouterLink to="/tables/data-table" class="sidemenu-link"> Data Table </RouterLink>
                   </li>
                 </ul>
               </template>
             </AccordionItem>
-            <AccordionItem>
+            <AccordionItem v-if="isAdmin">
               <template v-slot:accordion-trigger>
                 <div class="title-header d-flex align-items-center ga-2">
                   <span class="material-symbols-outlined">forum</span>
@@ -1358,35 +850,21 @@
               <template v-slot:accordion-content>
                 <ul class="sidebar-sub-menu">
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/forms/basic-elements"
-                      class="sidemenu-link"
-                    >
-                      Basic Elements
-                    </RouterLink>
+                    <RouterLink to="/forms/basic-elements" class="sidemenu-link"> Basic Elements </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/forms/advanced-elements"
-                      class="sidemenu-link"
-                    >
-                      Advanced Elements
-                    </RouterLink>
+                    <RouterLink to="/forms/advanced-elements" class="sidemenu-link"> Advanced Elements </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/forms/editors" class="sidemenu-link">
-                      Editors
-                    </RouterLink>
+                    <RouterLink to="/forms/editors" class="sidemenu-link"> Editors </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/forms/file-uploader" class="sidemenu-link">
-                      File Uploader
-                    </RouterLink>
+                    <RouterLink to="/forms/file-uploader" class="sidemenu-link"> File Uploader </RouterLink>
                   </li>
                 </ul>
               </template>
             </AccordionItem>
-            <AccordionItem>
+            <AccordionItem v-if="isAdmin">
               <template v-slot:accordion-trigger>
                 <div class="title-header d-flex align-items-center ga-2">
                   <span class="material-symbols-outlined">pie_chart</span>
@@ -1398,60 +876,36 @@
               <template v-slot:accordion-content>
                 <ul class="sidebar-sub-menu">
                   <li class="sidemenu-item">
-                    <RouterLink to="/charts/line-charts" class="sidemenu-link">
-                      Line
-                    </RouterLink>
+                    <RouterLink to="/charts/line-charts" class="sidemenu-link"> Line </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/charts/area-charts" class="sidemenu-link">
-                      Area
-                    </RouterLink>
+                    <RouterLink to="/charts/area-charts" class="sidemenu-link"> Area </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/charts/column-charts"
-                      class="sidemenu-link"
-                    >
-                      Column
-                    </RouterLink>
+                    <RouterLink to="/charts/column-charts" class="sidemenu-link"> Column </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/charts/mixed-charts" class="sidemenu-link">
-                      Mixed
-                    </RouterLink>
+                    <RouterLink to="/charts/mixed-charts" class="sidemenu-link"> Mixed </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/charts/radialbar-charts"
-                      class="sidemenu-link"
-                    >
-                      RadialBar
-                    </RouterLink>
+                    <RouterLink to="/charts/radialbar-charts" class="sidemenu-link"> RadialBar </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/charts/radar-charts" class="sidemenu-link">
-                      Radar
-                    </RouterLink>
+                    <RouterLink to="/charts/radar-charts" class="sidemenu-link"> Radar </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/charts/pie-charts" class="sidemenu-link">
-                      Pie
-                    </RouterLink>
+                    <RouterLink to="/charts/pie-charts" class="sidemenu-link"> Pie </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/charts/polar-charts" class="sidemenu-link">
-                      Polar
-                    </RouterLink>
+                    <RouterLink to="/charts/polar-charts" class="sidemenu-link"> Polar </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/charts/more-charts" class="sidemenu-link">
-                      More
-                    </RouterLink>
+                    <RouterLink to="/charts/more-charts" class="sidemenu-link"> More </RouterLink>
                   </li>
                 </ul>
               </template>
             </AccordionItem>
-            <AccordionItem>
+            <AccordionItem v-if="isAdmin">
               <template v-slot:accordion-trigger>
                 <div class="title-header d-flex align-items-center ga-2">
                   <span class="material-symbols-outlined">lock_open</span>
@@ -1463,65 +917,32 @@
               <template v-slot:accordion-content>
                 <ul class="sidebar-sub-menu">
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/authentication/sign-in"
-                      class="sidemenu-link"
-                    >
-                      Sign In
-                    </RouterLink>
+                    <RouterLink to="/authentication/sign-in" class="sidemenu-link"> Sign In </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/authentication/sign-up"
-                      class="sidemenu-link"
-                    >
-                      Sign Up
-                    </RouterLink>
+                    <RouterLink to="/authentication/sign-up" class="sidemenu-link"> Sign Up </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/authentication/forgot-password"
-                      class="sidemenu-link"
-                    >
+                    <RouterLink to="/authentication/forgot-password" class="sidemenu-link">
                       Forgot Password
                     </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/authentication/reset-password"
-                      class="sidemenu-link"
-                    >
-                      Reset Password
-                    </RouterLink>
+                    <RouterLink to="/authentication/reset-password" class="sidemenu-link"> Reset Password </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/authentication/confirm-email"
-                      class="sidemenu-link"
-                    >
-                      Confirm Email
-                    </RouterLink>
+                    <RouterLink to="/authentication/confirm-email" class="sidemenu-link"> Confirm Email </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/authentication/lock-screen"
-                      class="sidemenu-link"
-                    >
-                      Lock Screen
-                    </RouterLink>
+                    <RouterLink to="/authentication/lock-screen" class="sidemenu-link"> Lock Screen </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/authentication/logout"
-                      class="sidemenu-link"
-                    >
-                      Logout
-                    </RouterLink>
+                    <RouterLink to="/authentication/logout" class="sidemenu-link"> Logout </RouterLink>
                   </li>
                 </ul>
               </template>
             </AccordionItem>
-            <AccordionItem>
+            <AccordionItem v-if="isAdmin">
               <template v-slot:accordion-trigger>
                 <div class="title-header d-flex align-items-center ga-2">
                   <span class="material-symbols-outlined">content_copy</span>
@@ -1533,61 +954,33 @@
               <template v-slot:accordion-content>
                 <ul class="sidebar-sub-menu">
                   <li class="sidemenu-item">
-                    <RouterLink to="/extra-pages/pricing" class="sidemenu-link">
-                      Pricing
-                    </RouterLink>
+                    <RouterLink to="/extra-pages/pricing" class="sidemenu-link"> Pricing </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/extra-pages/timeline"
-                      class="sidemenu-link"
-                    >
-                      Timeline
-                    </RouterLink>
+                    <RouterLink to="/extra-pages/timeline" class="sidemenu-link"> Timeline </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/extra-pages/faq" class="sidemenu-link">
-                      FAQ
-                    </RouterLink>
+                    <RouterLink to="/extra-pages/faq" class="sidemenu-link"> FAQ </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/extra-pages/gallery" class="sidemenu-link">
-                      Gallery
-                    </RouterLink>
+                    <RouterLink to="/extra-pages/gallery" class="sidemenu-link"> Gallery </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/extra-pages/testimonials"
-                      class="sidemenu-link"
-                    >
-                      Testimonials
-                    </RouterLink>
+                    <RouterLink to="/extra-pages/testimonials" class="sidemenu-link"> Testimonials </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink to="/extra-pages/search" class="sidemenu-link">
-                      Search
-                    </RouterLink>
+                    <RouterLink to="/extra-pages/search" class="sidemenu-link"> Search </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/extra-pages/coming-soon"
-                      class="sidemenu-link"
-                    >
-                      Coming Soon
-                    </RouterLink>
+                    <RouterLink to="/extra-pages/coming-soon" class="sidemenu-link"> Coming Soon </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/extra-pages/blank-page"
-                      class="sidemenu-link"
-                    >
-                      Blank Page
-                    </RouterLink>
+                    <RouterLink to="/extra-pages/blank-page" class="sidemenu-link"> Blank Page </RouterLink>
                   </li>
                 </ul>
               </template>
             </AccordionItem>
-            <AccordionItem>
+            <AccordionItem v-if="isAdmin">
               <template v-slot:accordion-trigger>
                 <div class="title-header d-flex align-items-center ga-2">
                   <span class="material-symbols-outlined">error</span>
@@ -1599,44 +992,37 @@
               <template v-slot:accordion-content>
                 <ul class="sidebar-sub-menu">
                   <li class="sidemenu-item">
-                    <RouterLink to="/errors/not-found" class="sidemenu-link">
-                      404 Error
-                    </RouterLink>
+                    <RouterLink to="/errors/not-found" class="sidemenu-link"> 404 Error </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/errors/internal-error"
-                      class="sidemenu-link"
-                    >
-                      Internal Error
-                    </RouterLink>
+                    <RouterLink to="/errors/internal-error" class="sidemenu-link"> Internal Error </RouterLink>
                   </li>
                 </ul>
               </template>
             </AccordionItem>
-            <RouterLink to="/widgets" class="sidebar-menu-link">
+            <RouterLink to="/widgets" class="sidebar-menu-link" v-if="isAdmin">
               <span class="material-symbols-outlined">widgets</span>
               <span class="title">Widgets</span>
             </RouterLink>
-            <RouterLink to="/maps" class="sidebar-menu-link">
+            <RouterLink to="/maps" class="sidebar-menu-link" v-if="isAdmin">
               <span class="material-symbols-outlined">map</span>
               <span class="title">Maps</span>
             </RouterLink>
-            <RouterLink to="/notifications" class="sidebar-menu-link">
+            <RouterLink to="/notifications" class="sidebar-menu-link" v-if="isAdmin">
               <span class="material-symbols-outlined">notifications</span>
               <span class="title">Notifications</span>
             </RouterLink>
-            <RouterLink to="/members" class="sidebar-menu-link">
+            <RouterLink to="/members" class="sidebar-menu-link" v-if="isAdmin">
               <span class="material-symbols-outlined">people</span>
               <span class="title">Members</span>
             </RouterLink>
 
-            <span class="sub-title">OTHERS</span>
-            <RouterLink to="/my-profile" class="sidebar-menu-link">
+            <span class="sub-title" v-if="isAdmin">OTHERS</span>
+            <RouterLink to="/my-profile" class="sidebar-menu-link" v-if="isAdmin">
               <span class="material-symbols-outlined">account_circle</span>
               <span class="title">My Profile</span>
             </RouterLink>
-            <AccordionItem>
+            <AccordionItem v-if="isAdmin">
               <template v-slot:accordion-trigger>
                 <div class="title-header d-flex align-items-center ga-2">
                   <span class="material-symbols-outlined">settings</span>
@@ -1648,49 +1034,24 @@
               <template v-slot:accordion-content>
                 <ul class="sidebar-sub-menu">
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/settings/account-settings"
-                      class="sidemenu-link"
-                    >
-                      Account Settings
-                    </RouterLink>
+                    <RouterLink to="/settings/account-settings" class="sidemenu-link"> Account Settings </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/settings/change-password"
-                      class="sidemenu-link"
-                    >
-                      Change Password
-                    </RouterLink>
+                    <RouterLink to="/settings/change-password" class="sidemenu-link"> Change Password </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/settings/connections"
-                      class="sidemenu-link"
-                    >
-                      Connections
-                    </RouterLink>
+                    <RouterLink to="/settings/connections" class="sidemenu-link"> Connections </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/settings/privacy-policy"
-                      class="sidemenu-link"
-                    >
-                      Privacy Policy
-                    </RouterLink>
+                    <RouterLink to="/settings/privacy-policy" class="sidemenu-link"> Privacy Policy </RouterLink>
                   </li>
                   <li class="sidemenu-item">
-                    <RouterLink
-                      to="/settings/terms-conditions"
-                      class="sidemenu-link"
-                    >
-                      Terms & Conditions
-                    </RouterLink>
+                    <RouterLink to="/settings/terms-conditions" class="sidemenu-link"> Terms & Conditions </RouterLink>
                   </li>
                 </ul>
               </template>
             </AccordionItem>
-            <AccordionItem>
+            <AccordionItem v-if="isAdmin">
               <template v-slot:accordion-trigger>
                 <div class="title-header d-flex align-items-center ga-2">
                   <span class="material-symbols-outlined">unfold_more</span>
@@ -1702,17 +1063,13 @@
               <template v-slot:accordion-content>
                 <ul class="sidebar-sub-menu">
                   <li class="sidemenu-item">
-                    <a href="javascript:void(0)" class="sidemenu-link">
-                      First
-                    </a>
+                    <a href="javascript:void(0)" class="sidemenu-link"> First </a>
                   </li>
                   <li class="sidemenu-item">
                     <AccordionSlot>
                       <AccordionItem>
                         <template v-slot:accordion-trigger>
-                          <div
-                            class="title-header d-flex align-items-center ga-2"
-                          >
+                          <div class="title-header d-flex align-items-center ga-2">
                             <span class="title">Second</span>
                             <i class="arrow-right ri-arrow-right-s-line"></i>
                           </div>
@@ -1720,35 +1077,21 @@
                         <template v-slot:accordion-content>
                           <ul class="sidebar-sub-menu">
                             <li class="sidemenu-item">
-                              <a
-                                href="javascript:void(0)"
-                                class="sidemenu-link"
-                              >
-                                Second 1
-                              </a>
+                              <a href="javascript:void(0)" class="sidemenu-link"> Second 1 </a>
                             </li>
                             <li class="sidemenu-item">
                               <AccordionSlot>
                                 <AccordionItem>
                                   <template v-slot:accordion-trigger>
-                                    <div
-                                      class="title-header d-flex align-items-center ga-2"
-                                    >
+                                    <div class="title-header d-flex align-items-center ga-2">
                                       <span class="title">Second 2</span>
-                                      <i
-                                        class="arrow-right ri-arrow-right-s-line"
-                                      ></i>
+                                      <i class="arrow-right ri-arrow-right-s-line"></i>
                                     </div>
                                   </template>
                                   <template v-slot:accordion-content>
                                     <ul class="sidebar-sub-menu">
                                       <li class="sidemenu-item">
-                                        <a
-                                          href="javascript:void(0)"
-                                          class="sidemenu-link"
-                                        >
-                                          Third 1
-                                        </a>
+                                        <a href="javascript:void(0)" class="sidemenu-link"> Third 1 </a>
                                       </li>
                                     </ul>
                                   </template>
@@ -1761,14 +1104,12 @@
                     </AccordionSlot>
                   </li>
                   <li class="sidemenu-item">
-                    <a href="javascript:void(0)" class="sidemenu-link">
-                      Third
-                    </a>
+                    <a href="javascript:void(0)" class="sidemenu-link"> Third </a>
                   </li>
                 </ul>
               </template>
             </AccordionItem>
-            <RouterLink to="/authentication/logout" class="sidebar-menu-link">
+            <RouterLink to="/authentication/logout" class="sidebar-menu-link" v-if="isAdmin">
               <span class="material-symbols-outlined">logout</span>
               <span class="title">Logout</span>
             </RouterLink>
@@ -1779,27 +1120,33 @@
   </div>
 </template>
 
-<script>
-import { defineComponent } from "vue";
-import stateStore from "@/utils/store";
+<script lang="ts">
+import { computed, defineComponent } from 'vue'
+import stateStore from '@/utils/store'
 
-import AccordionSlot from "./AccordionSlot.vue";
-import AccordionItem from "./AccordionItem.vue";
+import AccordionSlot from './AccordionSlot.vue'
+import AccordionItem from './AccordionItem.vue'
+import { useUserStore } from '@/shared/store/user'
+import { storeToRefs } from 'pinia'
 
 export default defineComponent({
-  name: "LeftSidebar",
+  name: 'LeftSidebar',
   components: {
     AccordionSlot,
-    AccordionItem,
+    AccordionItem
   },
   setup() {
-    const stateStoreInstance = stateStore;
-
+    const stateStoreInstance = stateStore
+    const store = useUserStore()
+    const { listMenus, userInfo } = storeToRefs(store)
+    const isAdmin = computed(() => userInfo.value.roleIds.includes('ff1dec77-36ec-48a8-82ca-02a9fd23230c'))
     return {
       stateStoreInstance,
-    };
-  },
-});
+      listMenus,
+      isAdmin
+    }
+  }
+})
 </script>
 
 <style lang="scss">
@@ -2027,7 +1374,7 @@ export default defineComponent({
                 top: 50%;
                 left: 18px;
                 width: 10px;
-                content: "";
+                content: '';
                 height: 10px;
                 transition: 0.3s;
                 border-radius: 50%;
@@ -2050,7 +1397,7 @@ export default defineComponent({
                   left: -3px;
                   width: 6px;
                   height: 6px;
-                  content: "";
+                  content: '';
                   position: absolute;
                   background: #ffe8d4;
                   transform: translateY(-50%) rotate(45deg);
@@ -2095,7 +1442,7 @@ export default defineComponent({
                     top: 50%;
                     left: 18px;
                     width: 10px;
-                    content: "";
+                    content: '';
                     height: 10px;
                     transition: 0.3s;
                     border-radius: 50%;

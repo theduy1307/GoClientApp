@@ -39,22 +39,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from "vue";
+import { defineComponent, onMounted } from 'vue'
 
-import WelcomeDashboard from "../../components/Dashboard/Ecommerce/WelcomeDashboard.vue";
-import TotalSalesChart from "../../components/Dashboard/Ecommerce/TotalSalesChart.vue";
-import TotalOrdersChart from "../../components/Dashboard/Ecommerce/TotalOrdersChart.vue";
-import TotalCustomersChart from "../../components/Dashboard/Ecommerce/TotalCustomersChart.vue";
-import TotalRevenueChart from "../../components/Dashboard/Ecommerce/TotalRevenueChart.vue";
-import SalesByLocations from "../../components/Dashboard/Ecommerce/SalesByLocations.vue";
-import TopSellingProducts from "../../components/Dashboard/Ecommerce/TopSellingProducts.vue";
-import RecentOrders from "../../components/Dashboard/Ecommerce/RecentOrders.vue";
-import OrderSummaryChart from "../../components/Dashboard/Ecommerce/OrderSummaryChart.vue";
-import RecentTransactions from "../../components/Dashboard/Ecommerce/RecentTransactions.vue";
-import ReturningCustomerRateChart from "../../components/Dashboard/Ecommerce/ReturningCustomerRateChart.vue";
-import {userApi} from '@/infrastructure/apis/userApi'
+import WelcomeDashboard from '../../components/Dashboard/Ecommerce/WelcomeDashboard.vue'
+import TotalSalesChart from '../../components/Dashboard/Ecommerce/TotalSalesChart.vue'
+import TotalOrdersChart from '../../components/Dashboard/Ecommerce/TotalOrdersChart.vue'
+import TotalCustomersChart from '../../components/Dashboard/Ecommerce/TotalCustomersChart.vue'
+import TotalRevenueChart from '../../components/Dashboard/Ecommerce/TotalRevenueChart.vue'
+import SalesByLocations from '../../components/Dashboard/Ecommerce/SalesByLocations.vue'
+import TopSellingProducts from '../../components/Dashboard/Ecommerce/TopSellingProducts.vue'
+import RecentOrders from '../../components/Dashboard/Ecommerce/RecentOrders.vue'
+import OrderSummaryChart from '../../components/Dashboard/Ecommerce/OrderSummaryChart.vue'
+import RecentTransactions from '../../components/Dashboard/Ecommerce/RecentTransactions.vue'
+import ReturningCustomerRateChart from '../../components/Dashboard/Ecommerce/ReturningCustomerRateChart.vue'
 export default defineComponent({
-  name: "EcommercePage",
+  name: 'EcommercePage',
   components: {
     WelcomeDashboard,
     TotalSalesChart,
@@ -66,13 +65,7 @@ export default defineComponent({
     RecentOrders,
     OrderSummaryChart,
     RecentTransactions,
-    ReturningCustomerRateChart,
-  },
-});
-</script>
-<script setup lang="ts">
-const {getUserInfo} = userApi()
-onMounted(() => {
-  getUserInfo()
+    ReturningCustomerRateChart
+  }
 })
 </script>
