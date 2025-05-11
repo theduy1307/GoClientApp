@@ -204,8 +204,9 @@ import ConnectionsPage from '../pages/Settings/ConnectionsPage.vue'
 import PrivacyPolicyPage from '../pages/Settings/PrivacyPolicyPage.vue'
 import TermsConditionsPage from '../pages/Settings/TermsConditionsPage.vue'
 import { useUserStore } from '@/shared/store/user'
-
+import userManagementRoutes from '../pages/UserManagement/router/router'
 const routes: Array<RouteRecordRaw> = [
+  ...userManagementRoutes,
   {
     path: '/dashboard',
     name: 'EcommercePage',
